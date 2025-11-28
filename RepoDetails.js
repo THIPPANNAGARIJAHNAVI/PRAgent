@@ -1,28 +1,31 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import {useForm} from 'react-hook-form';
-const GetRepoDetails=()=>{
-    const {register,handleSubmit,formState:{errors}}=useForm();
-    const [feedback,setFeedback]=useState(null);
+import { useForm } from 'react-hook-form';
+const GetRepoDetails = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [feedback, setFeedback] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const handleSubmit=async(data)=>{
+
+    const onSubmitHandler = async (data) => { // Renamed to avoid conflict
         setLoading(true);
         setError(null);
         setFeedback(null);
-        try{
-            const res=await axios.post('http://localhost:8000/review_pr',{repo_owner:data.repository_owner,repo_name:data.repository_name});
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/review_pr'; // Environment variable
+        try {
+            const res = await axios.post(apiUrl, { repo_owner: data.repository_owner, repo_name: data.repository_name });
             console.log(res.data);
             setFeedback(res.data);
         }
-        catch(err){
+        catch (err) {
             setError(err.response?.data?.error || err.message || 'An error occurred while getting feedback.');
-            console.error('Error:',err.response?.data?.error || err.message || 'An error occurred while getting feedback.');
+            console.error('Error:', err.response?.data?.error || err.message || 'An error occurred while getting feedback.');
         } finally {
             setLoading(false);
         }
     }
-    return(
+
+    return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
                 {/* Header Section */}
@@ -37,16 +40,16 @@ const GetRepoDetails=()=>{
 
                 {/* Form Card */}
                 <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8 transition-all duration-300 hover:shadow-2xl">
-                    <form onSubmit={handleSubmit(handleSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmitHandler)}> {/* Corrected function usage */}
                         <div className="space-y-6">
                             {/* Repository Owner Input */}
                             <div>
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Repository Owner
                                 </label>
-                                <input 
-                                    type="text" 
-                                    {...register('repository_owner',{required:'Repository owner is required'})}
+                                <input
+                                    type="text"
+                                    {...register('repository_owner', { required: 'Repository owner is required' })}
                                     className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg \
                                                focus:outline-none focus:ring-2 focus:ring-blue-900 \
                                                focus:border-transparent transition-all duration-200\
@@ -70,9 +73,9 @@ const GetRepoDetails=()=>{
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Repository Name
                                 </label>
-                                <input 
-                                    type="text" 
-                                    {...register('repository_name',{required:'Repository name is required'})}
+                                <input
+                                    type="text"
+                                    {...register('repository_name', { required: 'Repository name is required' })}
                                     className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg \
                                                focus:outline-none focus:ring-2 focus:ring-blue-900 \
                                                focus:border-transparent transition-all duration-200\
@@ -92,13 +95,13 @@ const GetRepoDetails=()=>{
                             </div>
 
                             <div>
-                                <label>Branch name </label>
-                                <input type="text" {...register('branch_name',{required:"branch name is required"})} />
+                                <label>Branch name</label>
+                                <input type="text" {...register('branch_name', { required: "branch name is required" })} />
                             </div>
 
                             {/* Submit Button */}
-                            <button 
-                                type="submit" 
+                            <button
+                                type="submit"
                                 disabled={loading}
                                 className="w-full bg-gradient-to-r from-blue-900 to-indigo-900 \
                                            hover:from-blue-800 hover:to-indigo-800 \
@@ -170,7 +173,7 @@ const GetRepoDetails=()=>{
                         </div>
 
                         {/* Reviews List */}
-                        {feedback.reviews && feedback.reviews.map((review,index)=>(
+                        {feedback.reviews && feedback.reviews.map((review, index) => (
                             <div key={index} className="mb-8 last:mb-0 p-6 bg-gray-50 rounded-xl border border-gray-200 hover:shadow-md transition-shadow duration-200">
                                 <div className="flex items-start justify-between mb-4 pb-4 border-b border-gray-300">
                                     <h3 className="text-xl font-bold text-gray-900 flex items-center">
@@ -184,7 +187,7 @@ const GetRepoDetails=()=>{
                                         review.status === 'modified' ? 'bg-blue-100 text-blue-800' :
                                         review.status === 'removed' ? 'bg-red-100 text-red-800' :
                                         'bg-gray-100 text-gray-800'
-                                    }`}> 
+                                    }>` + 
                                         {review.status}
                                     </span>
                                 </div>
@@ -318,7 +321,7 @@ const GetRepoDetails=()=>{
                                                     Corrected Code
                                                 </h5>
                                                 <div className="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden">
-                                                    <pre className="text-xs font-mono text-gray-100 p-4 overflow-auto max-h-96" style={{scrollbarWidth: 'thin', scrollbarColor: '#4B5563 #1F2937'}}>
+                                                    <pre className="text-xs font-mono text-gray-100 p-4 overflow-auto max-h-96" style={{ scrollbarWidth: 'thin', scrollbarColor: '#4B5563 #1F2937' }}>
                                                         <code>{review.feedback.Corrected_Code}</code>
                                                     </pre>
                                                 </div>

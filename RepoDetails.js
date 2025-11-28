@@ -6,7 +6,7 @@ const GetRepoDetails=()=>{
     const [feedback,setFeedback]=useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const handlesubmit=async(data)=>{
+    const handleSubmit=async(data)=>{
         setLoading(true);
         setError(null);
         setFeedback(null);
@@ -37,7 +37,7 @@ const GetRepoDetails=()=>{
 
                 {/* Form Card */}
                 <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8 transition-all duration-300 hover:shadow-2xl">
-                    <form onSubmit={handleSubmit(handlesubmit)}>
+                    <form onSubmit={handleSubmit(handleSubmit)}>
                         <div className="space-y-6">
                             {/* Repository Owner Input */}
                             <div>
@@ -47,10 +47,10 @@ const GetRepoDetails=()=>{
                                 <input 
                                     type="text" 
                                     {...register('repository_owner',{required:'Repository owner is required'})}
-                                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg 
-                                               focus:outline-none focus:ring-2 focus:ring-blue-900 
-                                               focus:border-transparent transition-all duration-200
-                                               text-gray-900 placeholder-gray-400
+                                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg \
+                                               focus:outline-none focus:ring-2 focus:ring-blue-900 \
+                                               focus:border-transparent transition-all duration-200\
+                                               text-gray-900 placeholder-gray-400\
                                                disabled:bg-gray-100 disabled:cursor-not-allowed"
                                     placeholder="e.g., microsoft, facebook, google"
                                     disabled={loading}
@@ -73,10 +73,10 @@ const GetRepoDetails=()=>{
                                 <input 
                                     type="text" 
                                     {...register('repository_name',{required:'Repository name is required'})}
-                                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg 
-                                               focus:outline-none focus:ring-2 focus:ring-blue-900 
-                                               focus:border-transparent transition-all duration-200
-                                               text-gray-900 placeholder-gray-400
+                                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg \
+                                               focus:outline-none focus:ring-2 focus:ring-blue-900 \
+                                               focus:border-transparent transition-all duration-200\
+                                               text-gray-900 placeholder-gray-400\
                                                disabled:bg-gray-100 disabled:cursor-not-allowed"
                                     placeholder="e.g., react, vscode, tensorflow"
                                     disabled={loading}
@@ -92,23 +92,22 @@ const GetRepoDetails=()=>{
                             </div>
 
                             <div>
-                                <Label>Branch name </label>
-                                <input type="text" {...register('branch name',{required:"branch name is required"})} />
+                                <label>Branch name </label>
+                                <input type="text" {...register('branch_name',{required:"branch name is required"})} />
                             </div>
-
 
                             {/* Submit Button */}
                             <button 
                                 type="submit" 
                                 disabled={loading}
-                                className="w-full bg-gradient-to-r from-blue-900 to-indigo-900 
-                                           hover:from-blue-800 hover:to-indigo-800 
-                                           disabled:from-gray-400 disabled:to-gray-500
-                                           text-white font-semibold py-3.5 px-6 
-                                           rounded-lg transition-all duration-200 
-                                           transform hover:scale-[1.02] active:scale-[0.98]
-                                           disabled:cursor-not-allowed disabled:transform-none
-                                           shadow-lg hover:shadow-xl
+                                className="w-full bg-gradient-to-r from-blue-900 to-indigo-900 \
+                                           hover:from-blue-800 hover:to-indigo-800 \
+                                           disabled:from-gray-400 disabled:to-gray-500\
+                                           text-white font-semibold py-3.5 px-6 \
+                                           rounded-lg transition-all duration-200 \
+                                           transform hover:scale-[1.02] active:scale-[0.98]\
+                                           disabled:cursor-not-allowed disabled:transform-none\
+                                           shadow-lg hover:shadow-xl\
                                            flex items-center justify-center space-x-2"
                             >
                                 {loading ? (
@@ -185,7 +184,7 @@ const GetRepoDetails=()=>{
                                         review.status === 'modified' ? 'bg-blue-100 text-blue-800' :
                                         review.status === 'removed' ? 'bg-red-100 text-red-800' :
                                         'bg-gray-100 text-gray-800'
-                                    }`}>
+                                    }`}> 
                                         {review.status}
                                     </span>
                                 </div>
@@ -230,7 +229,9 @@ const GetRepoDetails=()=>{
                                                     <svg className="h-5 w-5 text-red-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                     </svg>
-                                                    <p className="text-sm text-red-700 font-medium">{review.feedback.error}</p>
+                                                    <p className="text-sm text-red-700 font-medium">
+                                                        {review.feedback.error}
+                                                    </p>
                                                 </div>
                                             </div>
                                         )}

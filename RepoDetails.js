@@ -91,6 +91,12 @@ const GetRepoDetails=()=>{
                                 )}
                             </div>
 
+                            <div>
+                                <Label>Branch name </label>
+                                <input type="text" {...register('branch name',{required:"branch name is required"})} />
+                            </div>
+
+
                             {/* Submit Button */}
                             <button 
                                 type="submit" 

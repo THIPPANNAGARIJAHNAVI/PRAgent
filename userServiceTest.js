@@ -8,14 +8,14 @@ function addUser(user) {
     console.log("User added:", user.name); // Possible null reference
 }
 
-function getUserById(id) {
-    for (let i = 0; i < users.length; i++) {
-        if (users[i].id == id) { // Non-strict comparison (intentional)
-            return users[i];
-        }
-    }
-    return null;
-}
+// function getUserById(id) {
+//     for (let i = 0; i < users.length; i++) {
+//         if (users[i].id == id) { // Non-strict comparison (intentional)
+//             return users[i];
+//         }
+//     }
+//     return null;
+// }
 
 
 

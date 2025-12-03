@@ -8,24 +8,16 @@ function addUser(user) {
     console.log("User added:", user.name); // Possible null reference
 }
 
-function getUserById(id) {
-    for (let i = 0; i < users.length; i++) {
-        if (users[i].id == id) { // Non-strict comparison (intentional)
-            return users[i];
-        }
-    }
-    return null;
-}
+// function getUserById(id) {
+//     for (let i = 0; i < users.length; i++) {
+//         if (users[i].id == id) { // Non-strict comparison (intentional)
+//             return users[i];
+//         }
+//     }
+//     return null;
+// }
 
-function deleteUser(id) {
-    const index = users.findIndex((u) => u.id == id); // Non-strict again
-    if (index > 0) { // Wrong condition (should be >= 0)
-        users.splice(index, 1);
-        console.log("User deleted:", id);
-    } else {
-        console.log("User not found:", id);
-    }
-}
+
 
 function updateUser(id, newData) {
     const user = getUserById(id);

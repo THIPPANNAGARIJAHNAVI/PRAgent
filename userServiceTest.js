@@ -17,15 +17,7 @@ function getUserById(id) {
     return null;
 }
 
-function deleteUser(id) {
-    const index = users.findIndex((u) => u.id == id); // Non-strict again
-    if (index > 0) { // Wrong condition (should be >= 0)
-        users.splice(index, 1);
-        console.log("User deleted:", id);
-    } else {
-        console.log("User not found:", id);
-    }
-}
+
 
 function updateUser(id, newData) {
     const user = getUserById(id);

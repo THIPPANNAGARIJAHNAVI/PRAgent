@@ -1,66 +1,38 @@
-# Code Review Guidelines
+# Form Guidelines
 
-This file should be placed in your repository at `.github/CODE_REVIEW_GUIDELINES.md`
+This document provides guidelines for building and validating forms in modern web applications.
 
-## General Principles
+---
 
-### Code Quality
-- Follow SOLID principles
-- Write self-documenting code with clear variable and function names
-- Prefer composition over inheritance
-- Keep functions small and focused (maximum 50 lines per function)
-- Maximum file length: 500 lines
+## 1. Form Structure
+- Use the `<form>` tag with proper `action` and `method` attributes (`POST` for submissions).
+- Every input field **must have a `name` attribute**.
+- Use `<label>` elements for accessibility.
+- Group related inputs using `<fieldset>` if needed.
 
-### Security
-- **CRITICAL**: Never commit secrets, API keys, passwords, or tokens
-- Validate all user inputs
-- Use parameterized queries for database operations
-- Sanitize data before displaying to users
-- Check for SQL injection vulnerabilities
+---
 
-### Error Handling
-- Always handle exceptions properly
-- Never use bare `except:` clauses
-- Provide meaningful error messages
-- Log errors appropriately
+## 2. Input Types
+- Use appropriate input types for better UX and built-in validation:
+  - `text`, `email`, `password`, `number`, `date`, `checkbox`, `radio`, `file`, etc.
+- Use `required`, `minlength`, `maxlength`, and `pattern` attributes for HTML validation.
 
-### Performance
-- Avoid N+1 queries in database operations
-- Use lazy loading where appropriate
-- Cache expensive computations
-- Avoid unnecessary loops and iterations
+---
 
-## Python Specific Guidelines
+## 3. Validation Guidelines
+- **Client-side validation:**  
+  - Use libraries like **React Hook Form** for handling form state and validation.
+  - Example with **Zod** schema validation:
 
-### Style
-- Follow PEP 8 style guide
-- Use type hints for function signatures
-- Maximum line length: 100 characters
-- Use meaningful variable names (avoid single letters except for loop counters)
+```javascript
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
-### Code Structure
-- Import statements should be at the top of the file
-- Group imports: standard library, third-party, local imports
-- Use `if __name__ == "__main__":` for executable scripts
-- Functions should have docstrings
-
-### Best Practices
-- Use list comprehensions instead of loops when appropriate
-- Prefer `with` statements for file operations
-- Use `enumerate()` instead of range(len())
-- Don't use `==` to compare with `None`, use `is None` instead
-
-### Testing
-- All new functions must have unit tests
-- Test coverage should be > 80%
-- Include edge cases in tests
-- Test both success and failure scenarios
-
-## Code Smells to Flag
-
-- Magic numbers (use named constants)
-- Duplicate code (DRY principle)
-- Long parameter lists (use data classes or dictionaries)
-- God classes (classes doing too much)
-- Dead code (unused imports, variables, functions)
-
+const schema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+});
+const { register, handleSubmit, formState: { errors } } = useForm({
+  resolver: zodResolver(schema),
+});

@@ -1,97 +1,67 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const FormExample = () => {
- 
-
-// Step 1: Define validation schema with Yup
-const validationSchema = Yup.object({
-  name: Yup.string()
-    .min(2, "Name must be at least 2 characters")
-    .required("Name is required"),
-  age: Yup.number()
-    .min(18, "You must be at least 18")
-    .max(120, "Invalid age")
-    .required("Age is required"),
+// Step 1: Define Zod schema
+const schema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  age: z
+    .number({ invalid_type_error: "Age is required" })
+    .min(18, "You must be at least 18")
+    .max(120, "Invalid age"),
 });
 
-
-
 const FormExample = () => {
-  // Step 2: Form initial values
-  const initialValues = {
-    name: "",
-    email: "",
-    age: "",
-  };
-
-
+  // Step 2: Initialize React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      email: "",
+      age: "",
+    },
+  });
 
   // Step 3: Submit handler
-  const onSubmit = (values, { resetForm }) => {
-    console.log("Form submitted:", values);
-    alert(`Hello ${values.name}, your email is ${values.email}`);
-    resetForm();
+  const onSubmit = (values) => {
+    console.log("Form submitted:", values);
+    alert(`Hello ${values.name}, your email is ${values.email}`);
+    reset();
   };
 
-
-
   return (
-    <div style={{ maxWidth: "400px", margin: "auto" }}>
-      <h2>Formik + Yup Form Example</h2>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <div style={{ marginBottom: "10px" }}>
-              <label htmlFor="name">Name:</label>
-              <Field type="text" name="name" />
-              <ErrorMessage
-                name="name"
-                component="div"
-                style={{ color: "red" }}
-              />
-            </div>
+    <div style={{ maxWidth: "400px", margin: "auto" }}>
+      <h2>React Hook Form + Zod Example</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div style={{ marginBottom: "10px" }}>
+          <label htmlFor="name">Name:</label>
+          <input type="text" {...register("name")} />
+          {errors.name && <div style={{ color: "red" }}>{errors.name.message}</div>}
+        </div>
 
+        <div style={{ marginBottom: "10px" }}>
+          <label htmlFor="email">Email:</label>
+          <input type="email" {...register("email")} />
+          {errors.email && <div style={{ color: "red" }}>{errors.email.message}</div>}
+        </div>
 
+        <div style={{ marginBottom: "10px" }}>
+          <label htmlFor="age">Age:</label>
+          <input type="number" {...register("age", { valueAsNumber: true })} />
+          {errors.age && <div style={{ color: "red" }}>{errors.age.message}</div>}
+        </div>
 
-            <div style={{ marginBottom: "10px" }}>
-              <label htmlFor="email">Email:</label>
-              <Field type="email" name="email" />
-              <ErrorMessage
-                name="email"
-                component="div"
-                style={{ color: "red" }}
-              />
-            </div>
-
-
-
-            <div style={{ marginBottom: "10px" }}>
-              <label htmlFor="age">Age:</label>
-              <Field type="number" name="age" />
-              <ErrorMessage
-                name="age"
-                component="div"
-                style={{ color: "red" }}
-              />
-            </div>
-
-
-
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-          </Form>
-        )}
- </Formik>
-    </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   );
 };
-}
+
 export default FormExample;
- 

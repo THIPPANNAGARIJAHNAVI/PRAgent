@@ -1,33 +1,49 @@
-Security Guidelines
+A. Security
 
-Sensitive data (passwords/usernames) is logged
+Do NOT log sensitive data (passwords, tokens, emails).
 
-Credentials are sent in URL query params
+Never hardcode API keys or secrets.
 
-Password input is not using type="password"
+Do not fetch sensitive data (like all users).
 
-Endpoints expose all users
+Use POST for credentials, not GET with query params.
 
-No HTTPS-safe POST request
+Sanitize user inputs before sending to server.
 
-✅ Performance Guidelines
+B. React Best Practices
 
-Missing dependency array in useEffect
+Always initialize state properly.
 
-Fetch running on every render → infinite re-renders
+Never mutate state directly.
 
-Unnecessary data fetching
+Avoid inline functions in JSX where avoidable.
 
-No memoization or optimization
+Always use type="password" for password fields.
 
-✅ React Best Practices
+Use environment variables for API URLs.
 
-useState() initialized with undefined instead of ""
+Add error handling to fetch calls.
 
-Missing [] in useEffect
+Don’t use useEffect without a dependency array when needed.
 
-Hard-coded URLs (no environment variables)
+C. Performance
 
-No error handling in fetch
+Do not perform API calls on every render.
 
-Inline functions inside JSX
+Avoid unnecessary rerenders.
+
+Prefer memoization (useMemo, useCallback) for heavy operations.
+
+Do not use large inline objects in JSX.
+
+D. Code Quality
+
+Use clear variable names.
+
+Avoid magic numbers or strings.
+
+Break large components into smaller ones.
+
+Remove unused imports and dead code.
+
+Add comments where needed for clarity.
